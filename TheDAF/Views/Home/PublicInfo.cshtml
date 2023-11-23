@@ -1,0 +1,38 @@
+﻿@model PublicInfoModel
+
+<h2>Public Information</h2>
+
+<p>Total Monetary Donations Received: @Model.TotalMonetaryDonations</p>
+<p>Total Goods Received: @Model.TotalGoodsReceived</p>
+
+<h3>Currently Active Disasters</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Aid Type</th>
+            <th>Allocated Money</th>
+            <th>Allocated Goods</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var disaster in Model.ActiveDisasters)
+        {
+            <tr>
+                <td>@disaster.DisasterID</td>
+                <td>@disaster.StartDate.ToShortDateString()</td>
+                <td>@(disaster.EndDate.HasValue ? disaster.EndDate.Value.ToShortDateString() : "-")</td>
+                <td>@disaster.Location</td>
+                <td>@disaster.Description</td>
+                <td>@disaster.AidType</td>
+                <td>@disaster.AllocatedMoney</td>
+                <td>@disaster.AllocatedGoods</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -56,7 +56,7 @@ namespace TheDAF.Controllers
                     }
                 }
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Menu", "Home");
             }
 
             return View(user);
@@ -86,7 +86,7 @@ namespace TheDAF.Controllers
                         if (reader.Read())
                         {
                             // Authentication successful
-                            return RedirectToAction("Index", "Home"); 
+                            return RedirectToAction("Menu", "Home"); 
                         }
                         else
                         {
@@ -126,7 +126,7 @@ namespace TheDAF.Controllers
                     }
                 }
 
-                return RedirectToAction("Index", "Home"); // Redirect to the home page after successful donation
+                return RedirectToAction("Menu", "Home"); // Redirect to the home page after successful donation
             }
 
             return View(monetaryDonation);
@@ -197,7 +197,7 @@ namespace TheDAF.Controllers
                         cmd.ExecuteNonQuery();
                     }
                 }
-                return RedirectToAction("Index", "Home"); // Redirect to the home page after successful donation
+                return RedirectToAction("Menu", "Home"); // Redirect to the home page after successful donation
             }
 
             return View(goodsDonation);
@@ -267,7 +267,7 @@ namespace TheDAF.Controllers
                     }
                 }
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Menu", "Home");
             }
             return View(category);
         }
@@ -372,7 +372,7 @@ namespace TheDAF.Controllers
                 if (IsDisasterActive(allocation.DisasterID))
                 {
                     InsertMoneyDonationAllocationIntoDatabase(allocation);
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Menu");
                 }
                 else
                 {
@@ -525,7 +525,7 @@ namespace TheDAF.Controllers
                 if (IsDisasterActive1(allocation.DisasterID))
                 {
                     InsertGoodsDonationAllocationIntoDatabase(allocation);
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Menu");
                 }
                 else
                 {
@@ -685,7 +685,7 @@ namespace TheDAF.Controllers
                     if (availableMoney >= purchase.TotalCost)
                     {
                         InsertPurchaseMadeIntoDatabase(purchase);
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Menu");
                     }
                     else
                     {
@@ -908,6 +908,79 @@ namespace TheDAF.Controllers
         public IActionResult Menu()
         {
             return View();
+        }
+
+        //Part 2 end
+        //Part 3
+        //a user being about to view information as a common website browser
+        public IActionResult PublicInfo()
+        {
+            var model = GetPublicInfoFromDatabase();
+            return View(model);
+        }
+
+        private PublicInfoModel GetPublicInfoFromDatabase()
+        {
+            var publicInfo = new PublicInfoModel();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Retrieve total monetary donations received
+                string monetaryDonationQuery = "SELECT COALESCE(SUM(Amount), 0) AS TotalMonetaryDonations FROM MoneyDonations";
+                using (SqlCommand monetaryDonationCmd = new SqlCommand(monetaryDonationQuery, connection))
+                {
+                    publicInfo.TotalMonetaryDonations = (decimal)monetaryDonationCmd.ExecuteScalar();
+                }
+
+                // Retrieve total number of goods received
+                string goodsDonationQuery = "SELECT COALESCE(SUM(NoOfItems), 0) AS TotalGoodsReceived FROM GoodsDonations";
+                using (SqlCommand goodsDonationCmd = new SqlCommand(goodsDonationQuery, connection))
+                {
+                    publicInfo.TotalGoodsReceived = (int)goodsDonationCmd.ExecuteScalar();
+                }
+
+                // Retrieve currently active disasters with allocated money and goods
+                string activeDisastersQuery = @"
+                SELECT 
+                    d.DisastersID, d.StartDate, d.EndDate, d.Location, d.Description, d.AidType, 
+                    COALESCE(SUM(m.Amount), 0) AS AllocatedMoney, 
+                    COALESCE(SUM(g.NoOfItems), 0) AS AllocatedGoods 
+                FROM 
+                    Disasters d 
+                    LEFT JOIN MoneyDonationAllocation m ON d.DisastersID = m.DisastersID 
+                    LEFT JOIN GoodsDonationAllocation g ON d.DisastersID = g.DisastersID 
+                WHERE 
+                    d.Active = 1 
+                    AND (d.EndDate IS NULL OR d.EndDate >= GETDATE())
+                GROUP BY 
+                    d.DisastersID, d.StartDate, d.EndDate, d.Location, d.Description, d.AidType";
+
+                using (SqlCommand activeDisastersCmd = new SqlCommand(activeDisastersQuery, connection))
+                {
+                    using (SqlDataReader reader = activeDisastersCmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var disasterInfo = new DisasterInfoModel
+                            {
+                                DisasterID = (int)reader["DisastersID"],
+                                StartDate = (DateTime)reader["StartDate"],
+                                EndDate = reader["EndDate"] != DBNull.Value ? (DateTime)reader["EndDate"] : (DateTime?)null,
+                                Location = reader["Location"].ToString(),
+                                Description = reader["Description"].ToString(),
+                                AidType = reader["AidType"].ToString(),
+                                AllocatedMoney = (decimal)reader["AllocatedMoney"],
+                                AllocatedGoods = (int)reader["AllocatedGoods"]
+                            };
+                            publicInfo.ActiveDisasters.Add(disasterInfo);
+                        }
+                    }
+                }
+            }
+
+            return publicInfo;
         }
     }
 

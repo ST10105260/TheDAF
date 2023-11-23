@@ -29,3 +29,11 @@ body {
 a {
     color: white;
 }
+
+.table th  {
+    color: white; /* white color */
+}
+
+.table tr {
+    color: white; /* white color */
+}
