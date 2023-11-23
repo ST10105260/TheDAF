@@ -1,0 +1,27 @@
+﻿@model List<GoodsDonationAllocationModel>
+
+<h2>Goods Donation Allocations</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+           
+            <th>Disaster ID</th>
+            <th>Description</th>
+            <th>Goods Description</th>
+            <th>No of Items</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var allocation in Model)
+        {
+            <tr>
+                
+                <td>@allocation.DisasterID</td>
+                <td>@allocation.Description</td>
+                <td>@allocation.Description_Goods</td>
+                <td>@allocation.NoOfItems</td>
+            </tr>
+        }
+    </tbody>
+</table>

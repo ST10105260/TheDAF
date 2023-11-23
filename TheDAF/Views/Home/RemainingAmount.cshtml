@@ -1,0 +1,21 @@
+﻿@model List<RemainingAmountModel>
+
+<h2>Remaining Amounts</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Disaster ID</th>
+            <th>Remaining Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var remainingAmount in Model)
+        {
+            <tr>
+                <td>@remainingAmount.DisasterID</td>
+                <td>@remainingAmount.RemainingAmount</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,32 @@
+﻿@model List<DisasterModel>
+
+<h2>Disasters</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Aid Type</th>
+            <th>Active</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var disaster in Model)
+        {
+            <tr>
+                @*<td>@disaster.StartDate</td>
+                <td>@disaster.EndDate</td>*@
+                <td>@disaster.StartDate.ToShortDateString()</td>
+                <td>@(disaster.EndDate != null ? disaster.EndDate.Value.ToShortDateString() : "-")</td>
+                <td>@disaster.Location</td>
+                <td>@disaster.Description</td>
+                <td>@disaster.AidType</td>
+                <td>@(disaster.Active ? "Yes" : "No")</td>
+            </tr>
+        }
+    </tbody>
+</table>

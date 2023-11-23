@@ -1,0 +1,29 @@
+﻿@model List<GoodsDonationModel>
+
+<h2>Goods Donations</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>Date</th>
+            <th>Number of Items</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Anonymous</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var donation in Model)
+        {
+            <tr>
+                
+                <td>@donation.Date</td>
+                <td>@donation.NoOfItems</td>
+                <td>@donation.Category</td>
+                <td>@donation.Description</td>
+                <td>@donation.IsAnonymous</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,27 @@
+﻿@model List<PurchaseMadeModel>
+
+<h2>Purchases</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>Disaster ID</th>
+            <th>Description</th>
+            <th>Purchased Items</th>
+            <th>Total Cost</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var purchase in Model)
+        {
+            <tr>
+                
+                <td>@purchase.DisasterID</td>
+                <td>@purchase.Description</td>
+                <td>@purchase.PurchasedItems</td>
+                <td>@purchase.TotalCost</td>
+            </tr>
+        }
+    </tbody>
+</table>

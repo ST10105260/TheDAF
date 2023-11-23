@@ -1,0 +1,25 @@
+﻿@model List<MonetaryDonationModel>
+
+<h2>Monetary Donations</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Anonymous</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var donation in Model)
+        {
+                <tr>
+                    
+                    <td>@donation.Date</td>
+                    <td>@donation.Amount</td>
+                    <td>@donation.IsAnonymous</td>
+                </tr>
+        }
+    </tbody>
+</table>

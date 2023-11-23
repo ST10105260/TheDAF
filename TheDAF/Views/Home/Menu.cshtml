@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "Menu";
+}
+
+<h2>Menu</h2>
+
+<ul>
+    <li><a href="@Url.Action("MonetaryDonation", "Home")">Monetary Donation</a></li>
+    <li><a href="@Url.Action("ViewMonetaryDonations", "Home")">View Monetary Donation</a></li>
+    <li><a href="@Url.Action("GoodsDonation", "Home")">Goods Donation</a></li>
+    <li><a href="@Url.Action("ViewGoodsDonations", "Home")">View Goods Donation</a></li>
+    <li><a href="@Url.Action("Category", "Home")">Add Category</a></li>
+    <li><a href="@Url.Action("MonetaryDonationAllocation", "Home")">Allocate Money to Disaster</a></li>
+    <li><a href="@Url.Action("MoneyDonationAllocationView", "Home")">View Money Allocation to Disaster</a></li>
+    <li><a href="@Url.Action("GoodsDonationAllocation", "Home")">Allocate Goods to Disaster</a></li>
+    <li><a href="@Url.Action("GoodsDonationAllocationsView", "Home")">View Goods Allocation to Disaster</a></li>
+    <li><a href="@Url.Action("Purchase", "Home")">Purchases</a></li>
+    <li><a href="@Url.Action("PurchasesView", "Home")">View Purchases Made</a></li>
+    <li><a href="@Url.Action("RemainingAmount", "Home")">View Remaining Amount</a></li>
+</ul>
+
