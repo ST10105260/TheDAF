@@ -287,7 +287,7 @@ namespace TheDAF.Controllers
                 // Save disaster to the database
                 InsertDisasterIntoDatabase(disaster);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Menu");
             }
 
             return View(disaster);
